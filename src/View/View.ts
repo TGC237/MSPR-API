@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { ICommande } from '../Modele/modele';
+import { ICommande } from '../models/modele';
 
 // Format la réponse pour une liste de commandes
 export const renderCommandeList = (res: Response, commandes: ICommande[]) => {

@@ -49,6 +49,8 @@ const commandeSchema = new Schema<ICommande>({
   },
   dateCommande: { type: Date, default: Date.now },
   total: { type: Number, required: true }
+}, {
+  collection: 'orders'
 });
 
 const Commande = mongoose.model<ICommande>('Commande', commandeSchema);
