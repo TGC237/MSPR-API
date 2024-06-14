@@ -1,22 +1,12 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 interface IArticle {
-  nomDuCafe: string;
-  variete: string;
-  taille: 'petit' | 'moyen' | 'grand';
-  prix: number;
+  produitId: mongoose.Schema.Types.ObjectId;  // Référence au modèle Produit
   quantite: number;
 }
 
-interface IClient {
-  nom: string;
-  prenom: string;
-  email: string;
-  adresse: string;
-}
-
 interface ICommande extends Document {
-  client: IClient;
+  clientId: mongoose.Schema.Types.ObjectId;  // Référence au modèle Client
   articles: IArticle[];
   status: 'en_attente' | 'en_preparation' | 'prete' | 'livree';
   dateCommande: Date;
@@ -24,23 +14,13 @@ interface ICommande extends Document {
 }
 
 const articleSchema = new Schema<IArticle>({
-  nomDuCafe: { type: String, required: true },
-  variete: { type: String, required: true },
-  taille: { type: String, required: true, enum: ['petit', 'moyen', 'grand'] },
-  prix: { type: Number, required: true },
-  quantite: { type: Number, required: true, default: 1, min: 1 }
-});
-
-const clientSchema = new Schema<IClient>({
-  nom: { type: String, required: true },
-  prenom: { type: String, required: true },
-  email: { type: String, required: true },
-  adresse: { type: String, required: true }
+  produitId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+  quantite: { type: Number, required: true, default: 1 }
 });
 
 const commandeSchema = new Schema<ICommande>({
-  client: { type: clientSchema, required: true },
-  articles: { type: [articleSchema], required: true },
+  clientId: { type: Schema.Types.ObjectId, ref: 'Customer', required: true },
+  articles: [articleSchema],
   status: {
     type: String,
     required: true,
@@ -55,4 +35,4 @@ const commandeSchema = new Schema<ICommande>({
 
 const Commande = mongoose.model<ICommande>('Commande', commandeSchema);
 
-export { Commande, ICommande, IClient, IArticle };
+export { Commande, ICommande, IArticle };
