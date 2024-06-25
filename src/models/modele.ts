@@ -1,12 +1,12 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
 interface IArticle {
-  produitId: mongoose.Schema.Types.ObjectId;  // Référence au modèle Produit
+  produitId: mongoose.Schema.Types.ObjectId;
   quantite: number;
 }
 
 interface ICommande extends Document {
-  clientId: mongoose.Schema.Types.ObjectId;  // Référence au modèle Client
+  clientId: mongoose.Schema.Types.ObjectId;
   articles: IArticle[];
   status: 'en_attente' | 'en_preparation' | 'prete' | 'livree';
   dateCommande: Date;
@@ -14,13 +14,13 @@ interface ICommande extends Document {
 }
 
 const articleSchema = new Schema<IArticle>({
-  produitId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+  produitId: { type: Schema.Types.ObjectId, required: true },
   quantite: { type: Number, required: true, default: 1 }
 });
 
 const commandeSchema = new Schema<ICommande>({
-  clientId: { type: Schema.Types.ObjectId, ref: 'Customer', required: true },
-  articles: [articleSchema],
+  clientId: { type: Schema.Types.ObjectId, required: true },
+  articles: { type: [articleSchema], required: true },
   status: {
     type: String,
     required: true,

@@ -26,20 +26,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Commande = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const articleSchema = new mongoose_1.Schema({
-    nomDuCafe: { type: String, required: true },
-    variete: { type: String, required: true },
-    taille: { type: String, required: true, enum: ['petit', 'moyen', 'grand'] },
-    prix: { type: Number, required: true },
-    quantite: { type: Number, required: true, default: 1, min: 1 }
-});
-const clientSchema = new mongoose_1.Schema({
-    nom: { type: String, required: true },
-    prenom: { type: String, required: true },
-    email: { type: String, required: true },
-    adresse: { type: String, required: true }
+    produitId: { type: mongoose_1.Schema.Types.ObjectId, required: true },
+    quantite: { type: Number, required: true, default: 1 }
 });
 const commandeSchema = new mongoose_1.Schema({
-    client: { type: clientSchema, required: true },
+    clientId: { type: mongoose_1.Schema.Types.ObjectId, required: true },
     articles: { type: [articleSchema], required: true },
     status: {
         type: String,
