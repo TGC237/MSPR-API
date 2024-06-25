@@ -1,12 +1,54 @@
 version: '3.8'
 
+networks:
+  monitoring:
+    driver: bridge
+
 services:
-  app:
+  api-commandes:
     build: .
+    container_name: api-commandes
     ports:
-      - "3001:3000" 
+      - "3000:3000"
     environment:
       - MONGODB_URI=mongodb+srv://niarisiham:niari@cluster0.eevqfac.mongodb.net/CoffeData?retryWrites=true&w=majority
+    depends_on:
+      - mongo
+    networks:
+      - monitoring
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
     volumes:
-      - .:/app
-    command: npm start
+      - mongo_data:/data/db
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - monitoring
+
+volumes:
+  mongo_data:
+  grafana_data:

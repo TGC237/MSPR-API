@@ -1,5 +1,5 @@
 {
-  "name": "coffemspr",
+  "name": "apicommandes",
   "version": "1.0.0",
   "description": "",
   "main": "dist/server.js",
@@ -7,18 +7,17 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "devStart": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
-    "pretest": "npm run build",
-    "test": "mocha --config .mocharc.js"
+    "pretest": "tsc -p tsconfig.test.json",
+    "test": "mocha dist/tests/**/*.test.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
     "express": "^4.19.2",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.4.1"
+    "mongoose": "^8.4.1",
+    "prom-client": "^14.2.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.16",
